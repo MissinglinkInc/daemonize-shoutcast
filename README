@@ -1,0 +1,10 @@
+INSTALL
+
+1. change path variables
+2. copy 'streamingd' to /etc/init.d/ (linux)
+
+USE
+* /etc/init.d/streamingd [start|stop]
+
+AUTO START
+* chkconfig streamingd on (centos)
