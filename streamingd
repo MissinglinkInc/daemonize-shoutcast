@@ -1,0 +1,44 @@
+#!/bin/bash
+# chkconfig: 345 44 56
+# description: Shoutcast Streaming Server
+
+# Shoutcast Server Path & Arg
+shoutcast=${SHOUTCAST-/streaming-system/shoutcast_server/sc_serv sc_serv_basic.conf}
+# Shoutcast Server Watchdog Script Path
+streamingd=${STREAMINGD-/usr/bin/perl /streaming-system/shoutcast_server_watchdog.pl}
+scpidfile=${SCPIDFILE-/var/run/shoutcast.pid}
+pidfile=${PIDFILE-/var/run/streamingd.pid}
+user='streaming'
+
+. /etc/init.d/functions
+
+start() {
+	daemon --pidfile=${pidfile} --user=${user} $streamingd
+}
+
+stop() {
+	killproc -p ${pidfile} $streamingd -2
+	killproc -p ${scpidfile} $shoutcast -2
+}
+
+case $1 in
+start)
+	start
+       ;;
+stop)
+	#killproc -p ${pidfile} $streamingd -2
+	#killproc -p ${scpidfile} $shoutcast -2
+	#kill `head -n1 '/var/run/streamingd.pid'`
+	#sleep 1
+	#kill `head -n1 '/var/run/shoutcast.pid'`
+	stop
+       ;;
+status)
+	status -p ${pidfile} $streamingd
+	status -p ${scpidfile} $shoutcast
+	;;
+*)
+       echo "Usage: streamingd [start|stop|status]" >&2
+       ;;
+esac
+exit 0
